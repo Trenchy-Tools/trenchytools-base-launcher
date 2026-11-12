@@ -5,6 +5,8 @@
  * themselves, so another chain (the pons starter on Robinhood Chain, any EVM chain) is mostly a new copy of this file.
  * See PORTING.md for the rest (the API client, the launch executor, the signer).
  */
+import type { Launchpad } from "./launchpad"
+
 export type ChainConfig = {
   /** the chain, as people say it ("Solana", "Robinhood Chain") */
   name: string
@@ -97,6 +99,8 @@ export type ChainConfig = {
     /** seconds after the create before any other buy (a launchpad that taxes its first seconds, e.g. Clanker's 20 s anti-snipe) */
     launchQuietS?: number
   }
+  /** the launchpads a launch can go to (lib/launchpad.ts); the first is the default */
+  launchpads: Launchpad[]
   features: {
     /** Solana: empty token accounts hold rent that "Close empty token accounts" recovers */
     tokenAccounts: boolean
@@ -120,10 +124,10 @@ export const chain: ChainConfig = {
   name: "Base",
   symbol: "ETH",
   launchpad: "Clanker",
-  appName: "Clanker launcher",
+  appName: "Base launcher",
   suiteId: "base",
   logo: "/logos/chains/base.svg",
-  launchpadLogo: "/logos/launchpads/clanker.png",
+  launchpadLogo: "/logos/chains/base.svg",
   explorer: { name: "BaseScan", logo: "/logos/terminals/explorer.svg" },
   coinParam: "token",
   coinNoun: "token address",
@@ -166,5 +170,9 @@ export const chain: ChainConfig = {
   vanitySuffix: null,
   evm: { api: "/api/base", chainId: 8453, ws: false, createVenue: "clanker", exemptList: false, minBuy: 0.0001, totalSupply: 1_000_000_000, transferChain: "base", launchQuietS: 21 },
   // creator fees: Clanker's fee escrow holds the creator's tax share; collectCreatorFee claims it
+  launchpads: [
+    { id: "clanker", name: "Clanker", logo: "/logos/launchpads/clanker.png", site: "https://clanker.world", note: "Clanker V5: a tax token on a Uniswap v4 pool; buys in the first 20 s pay an anti-snipe fee, so the launch waits", body: { venue: "clanker" }, coinUrl: (t) => `https://clanker.world/clanker/${t}`, launchQuietS: 21,
+      settings: [{ field: "taxPercent", label: "Tax", kind: "number", default: "1", unit: "%", min: 1, max: 10, help: "buy and sell, 1–10 %; the protocol keeps 10 % of it (0.5–1 % of the trade), the rest is yours" }] },
+  ],
   features: { tokenAccounts: false, creatorFees: true, mayhem: false, sameBlock: false, pairs: false, holderRewards: false },
 }
