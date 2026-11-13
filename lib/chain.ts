@@ -72,7 +72,7 @@ export type ChainConfig = {
   maxBundle: number
   /** the tip that carries a same-block bundle ("Jito tip"), or null when the chain has none */
   tipName: string | null
-  /** one line on how bundle buyers land, for the "?" of Bundle buyers (limits, lookup tables, …) */
+  /** one line on how the first buyers land, for the "?" of First buyers */
   bundleHelp: string
   /** a vanity address suffix the launchpad uses ("pump"), or null */
   vanitySuffix: string | null
@@ -166,7 +166,7 @@ export const chain: ChainConfig = {
   minGas: 0.00005,
   maxBundle: 16,
   tipName: null,
-  bundleHelp: "Base has no Jito, and Clanker charges an anti-snipe fee on buys in the first 20 s after a launch (99 %, falling to the normal tax). The launch waits those 20 s, then the bundle buys all go out at once. Clanker coins are tax tokens: every buy and sell pays the coin's tax (1 % by default) and your share comes back as creator fees.",
+  bundleHelp: "Base has no Jito, and Clanker charges an anti-snipe fee on buys in the first 20 s after a launch (99 %, falling to the normal tax). The launch waits those 20 s, then the first buys all go out at once. Clanker coins are tax tokens: every buy and sell pays the coin's tax (1 % by default) and your share comes back as creator fees.",
   vanitySuffix: null,
   evm: { api: "/api/base", chainId: 8453, ws: false, createVenue: "clanker", exemptList: false, minBuy: 0.0001, totalSupply: 1_000_000_000, transferChain: "base", launchQuietS: 21 },
   // creator fees: Clanker's fee escrow holds the creator's tax share; collectCreatorFee claims it
